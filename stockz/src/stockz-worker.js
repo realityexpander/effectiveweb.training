@@ -1,6 +1,6 @@
 
 const cacheName = 'stockz-cache-v0.0.5';
-const resources = ['index.html','style.css','app.js','d3/d3.js','images/logo.svg'];
+const resources = ['index.html', 'style.css', 'app.js', 'd3/d3.js', 'images/logo.svg'];
 
 const prefetch = (name) => caches.open(name).then(cache => cache.addAll(resources));
 
@@ -17,14 +17,14 @@ self.addEventListener('fetch', event => {
         then(response => (response || fetch(request))))
 });
 
-self.addEventListener('activate', event => { 
+self.addEventListener('activate', event => {
     console.log('cleaning old caches');
     self.clients.claim();
     const staleCaches = caches.keys().then(keys => keys.filter(key => key !== cacheName).map(stale => caches.delete(stale)));
     event.waitUntil(staleCaches);
 })
 
-self.addEventListener('message', event => { 
+self.addEventListener('message', event => {
     console.log(event);
     caches.delete(cacheName).then(_ => prefetch(cacheName));
 });
