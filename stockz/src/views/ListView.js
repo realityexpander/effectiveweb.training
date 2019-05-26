@@ -1,4 +1,4 @@
-import {html,render } from './../lit-html/lit-html.js';
+import { html, render } from './../lit-html/lit-html.js';
 import Stocks from './Stocks.js';
 import AirElement from './AirElement.js';
 export default class ListView extends AirElement {
@@ -10,17 +10,17 @@ export default class ListView extends AirElement {
     }
 
     connectedCallback() {
-        addEventListener(this.listenerName,this.onViewChanged() );
+        addEventListener(this.listenerName, this.onViewChanged());
         this.viewChanged();
     }
 
-    disconnectedCallback() { 
+    disconnectedCallback() {
         console.log('cleanup');
-        this.removeEventListener(this.listenerName,this.onViewChanged());
+        this.removeEventListener(this.listenerName, this.onViewChanged());
     }
 
     createView() {
-        return html `
+        return html`
         <style>
          header{
              background: var(--air-brown, red);
@@ -36,13 +36,17 @@ export default class ListView extends AirElement {
                     </tr>
                 </thead>
                 <tbody>
-                    ${Stocks.all().map(({ name, price, amount, total }) => 
-                html`
+                    ${Stocks.all().map(({ name, price, amount, total }) =>
+            html`
                     <tr>
-                    <td>${name}</td><td>${price}</td><td>${amount}</td><td>${total}</td><td><button id="${name}" @click=${(e) => this.removeStock(e)}>remove</button></td>
+                    <td>${name}</td>
+                    <td>${price}</td>
+                    <td>${amount}</td>
+                    <td>${total}</td>
+                    <td><button id="${name}" @click=${(e) => this.removeStock(e)}>remove</button></td>
                     </tr>
                 `
-                )}
+        )}
                 </tbody>
             </table>
         `;
