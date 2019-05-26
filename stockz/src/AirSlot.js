@@ -4,16 +4,16 @@ import Overview from './views/Overview.js';
 import AboutView from './views/AboutView.js';
 
 
-export default class AirSlot extends HTMLElement{ 
+export default class AirSlot extends HTMLElement {
 
-    constructor(){ 
+    constructor() {
         super();
         this.oldChild = null;
         this.currentView = null;
-        this.root = this.attachShadow({mode:'open'});
+        this.root = this.attachShadow({ mode: 'open' });
     }
 
-    connectedCallback() { 
+    connectedCallback() {
         this.root.innerHTML = `
         <style>
         slot[name="view"]{
@@ -26,20 +26,20 @@ export default class AirSlot extends HTMLElement{
         </style>
         <slot name="view">VIEW</slot>
         `;
-        document.addEventListener('air-nav',e => this.onNavigation(e));
+        document.addEventListener('air-nav', e => this.onNavigation(e));
         this.oldChild = this.root.querySelector("[name=view]");
     }
 
-    onNavigation(evt) { 
+    onNavigation(evt) {
         const { detail } = evt;
         const { hash: linkName } = detail;
         this.currentView = linkName;
         this.loadView(linkName);
     }
-    
-    async loadView(linkName) { 
+
+    async loadView(linkName) {
         let newChild;
-        switch (linkName) { 
+        switch (linkName) {
             case 'About':
                 newChild = new AboutView();
                 break;
@@ -56,15 +56,15 @@ export default class AirSlot extends HTMLElement{
                 throw new Error(`Unknown route: ${linkName}`);
         }
 
-            if (this.oldChild) {
-                this.root.replaceChild(newChild, this.oldChild);
-            } else { 
-                this.root.appendChild(newChild);
-            }
-    
+        if (this.oldChild) {
+            this.root.replaceChild(newChild, this.oldChild);
+        } else {
+            this.root.appendChild(newChild);
+        }
+
         this.oldChild = newChild;
     }
 
 }
 
-customElements.define('air-slot',AirSlot);
+customElements.define('air-slot', AirSlot);
