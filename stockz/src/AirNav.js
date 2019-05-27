@@ -2,7 +2,6 @@ export default class AirNav extends HTMLElement {
     constructor() {
         super();
         this.activeLink = null;
-        console.log("window.location.href=", window.location.href);
     }
 
     connectedCallback() {
@@ -12,6 +11,25 @@ export default class AirNav extends HTMLElement {
         const links = this.querySelectorAll("a");
         console.log("links=", links);
         links.forEach(e => this.registerListener(e));
+
+
+
+        let location = window.location.href.split('#')[1];
+        if (location) { //"Add"
+            let hrefLink = this.querySelector(`[href="#${location}"]`);
+            hrefLink.classList.add(this.getAttribute('activeLinkClass'));
+            this.activeLink = hrefLink;
+            this.onLinkClicked({ target: hrefLink });
+
+            const event = new CustomEvent('air-nav', {
+                detail: {
+                    href: "http://localhost:3000/#" + location,
+                    hash: location
+                },
+                bubbles: true
+            });
+            document.querySelector('air-nav').dispatchEvent(event);
+        }
 
     }
 
