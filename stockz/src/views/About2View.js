@@ -1,11 +1,10 @@
 import AirElement from "./AirElement.js";
 import { html } from "../lit-html/lit-html.js";
 
-export default class AboutView extends AirElement {
+export default class About2View extends AirElement {
 
     constructor() {
         super();
-        this.name = "duke";
     }
     connectedCallback() {
         this.viewChanged();
@@ -14,14 +13,14 @@ export default class AboutView extends AirElement {
     createView() {
         return html`
         <article>
-         <h3>powered by web standards & ${this.name}</h3>
+         <h3>About #2</h3>
         </article>
         `;
 
     }
 }
 
-customElements.define('about-view', AboutView);
+customElements.define('about2-view', About2View);
 
 
 

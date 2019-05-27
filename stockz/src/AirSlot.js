@@ -2,6 +2,7 @@ import AddView from './views/AddView.js';
 import ListView from './views/ListView.js';
 import Overview from './views/Overview.js';
 import AboutView from './views/AboutView.js';
+import About2View from './views/About2View.js';
 
 
 export default class AirSlot extends HTMLElement {
@@ -31,6 +32,7 @@ export default class AirSlot extends HTMLElement {
     }
 
     onNavigation(evt) {
+        console.log('AirSlot onNavigation')
         const { detail } = evt;
         const { hash: linkName } = detail;
         this.currentView = linkName;
@@ -42,6 +44,9 @@ export default class AirSlot extends HTMLElement {
         switch (linkName) {
             case 'About':
                 newChild = new AboutView();
+                break;
+            case 'About2':
+                newChild = new About2View();
                 break;
             case 'Add':
                 newChild = new AddView();

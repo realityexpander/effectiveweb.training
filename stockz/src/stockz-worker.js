@@ -5,6 +5,7 @@ const resources = ['index.html', 'style.css', 'app.js', 'd3/d3.js', 'images/logo
 const prefetch = (name) => caches.open(name).then(cache => cache.addAll(resources));
 
 self.addEventListener('install', event => {
+    console.log('worker install');
     self.skipWaiting();
     event.waitUntil(prefetch(cacheName));
 }
@@ -12,14 +13,14 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
     const { request } = event;
-    console.log('onfetch ', request);
+    console.log('worker onfetch ', request);
     event.respondWith(caches.match(request).
         then(response => (response || fetch(request))))
 });
 
 // Clear out the old caches
 self.addEventListener('activate', event => {
-    console.log('cleaning old caches');
+    console.log('worker cleaning old caches');
     self.clients.claim();
     const staleCaches = caches.keys()
         .then(keys => keys
@@ -30,6 +31,6 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('message', event => {
-    console.log(event);
+    console.log("worker evt", event);
     caches.delete(cacheName).then(_ => prefetch(cacheName));
 });

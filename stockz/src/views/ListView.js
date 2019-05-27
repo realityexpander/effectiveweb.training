@@ -1,26 +1,31 @@
-import { html, render } from './../lit-html/lit-html.js';
+import AirElement from "./AirElement.js";
+import { html } from "../lit-html/lit-html.js";
+// import { html, render } from './../lit-html/lit-html.js';
+
 import Stocks from './Stocks.js';
-import AirElement from './AirElement.js';
 export default class ListView extends AirElement {
 
     constructor() {
         super();
         this.onViewChanged = _ => this.viewChanged();
         this.listenerName = 'air-stocks';
+        console.log("Listview constructor:", Stocks.all());
     }
 
     connectedCallback() {
+        console.log("ListView connectedCallback:", Stocks.all());
         // Fixed here
         addEventListener(this.listenerName, this.onViewChanged);
         this.viewChanged();
     }
 
     disconnectedCallback() {
-        console.log('cleanup');
+        console.log('ListView cleanup');
         this.removeEventListener(this.listenerName, this.onViewChanged);
     }
 
     createView() {
+        console.log("Listview increateview:", Stocks.all());
         return html`
         <style>
          header{

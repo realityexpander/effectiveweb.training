@@ -1,24 +1,26 @@
-export default class AirNav extends HTMLElement { 
-    constructor() { 
+export default class AirNav extends HTMLElement {
+    constructor() {
         super();
         this.activeLink = null;
+        console.log("window.location.href=", window.location.href);
     }
 
-    connectedCallback() { 
+    connectedCallback() {
         this.activeLinkClass = this.getAttribute('activeLinkClass');
         if (!this.activeLinkClass)
             this.activeLinkClass = 'active-link';
         const links = this.querySelectorAll("a");
-        console.log(links);
+        console.log("links=", links);
         links.forEach(e => this.registerListener(e));
+
     }
 
-    registerListener(e) { 
+    registerListener(e) {
         e.onclick = evt => this.onLinkClicked(evt);
         window.onhashchange = evt => this.onAddressBarChanged(evt);
     }
 
-    onAddressBarChanged(evt) { 
+    onAddressBarChanged(evt) {
         const { location } = window;
         const { href } = location;
         const { hash } = location;
@@ -28,18 +30,18 @@ export default class AirNav extends HTMLElement {
                 href: href,
                 hash: hash.substring(1)
             },
-            bubbles:true
+            bubbles: true
 
         });
         this.dispatchEvent(event);
         const element = this.querySelector(`[href="${hash}"]`);
-        this.onLinkClicked({target: element});
-        
+        this.onLinkClicked({ target: element });
+
     }
 
-    onLinkClicked(evt) { 
+    onLinkClicked(evt) {
         const { target } = evt;
-        if (this.activeLink) { 
+        if (this.activeLink) {
             this.activeLink.classList.toggle(this.activeLinkClass);
         }
         this.activeLink = target;

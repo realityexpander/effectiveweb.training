@@ -60,3 +60,5 @@ typings/
 # next.js build output
 .next
 stockz/dist
+stockz/src/.DS_Store
+.DS_Store

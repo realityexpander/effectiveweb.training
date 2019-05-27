@@ -1,19 +1,19 @@
 import Stocks from './Stocks.js';
 import ListView from './ListView.js';
-import { html, render } from './../lit-html/lit-html.js';
+import { html, render } from '../lit-html/lit-html.js';
 import AirElement from './AirElement.js';
 
-export default class AddView extends AirElement { 
-    constructor() { 
+export default class AddView extends AirElement {
+    constructor() {
         super();
     }
 
-    connectedCallback() { 
+    connectedCallback() {
         this.viewChanged();
     }
 
 
-    createView() { 
+    createView() {
         return html`
         <style>
         form{
@@ -27,7 +27,7 @@ export default class AddView extends AirElement {
             width: 3em;
         }
         </style>
-          <form @submit=${(e)=>this.addStock(e)}>
+          <form @submit=${(e) => this.addStock(e)}>
             <fieldset>
             <legend>add stock</legend>
             <label for="name">name:
@@ -46,13 +46,13 @@ export default class AddView extends AirElement {
         `;
     }
 
-    addStock(event) { 
+    addStock(event) {
         event.preventDefault();
-        const { name,price,amount } = event.target.elements
+        const { name, price, amount } = event.target.elements
         Stocks.add(name.value, price.value, amount.value);
         console.log(Stocks.all());
     }
 
 }
 
-customElements.define('add-view',AddView);
+customElements.define('add-view', AddView);
