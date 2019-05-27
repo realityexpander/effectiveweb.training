@@ -10,13 +10,13 @@ export default class ListView extends AirElement {
     }
 
     connectedCallback() {
-        addEventListener(this.listenerName, this.onViewChanged());
+        addEventListener(this.listenerName, this.onViewChanged);
         this.viewChanged();
     }
 
     disconnectedCallback() {
         console.log('cleanup');
-        this.removeEventListener(this.listenerName, this.onViewChanged());
+        this.removeEventListener(this.listenerName, this.onViewChanged);
     }
 
     createView() {
