@@ -10,6 +10,7 @@ export default class ListView extends AirElement {
     }
 
     connectedCallback() {
+        // Fixed here
         addEventListener(this.listenerName, this.onViewChanged);
         this.viewChanged();
     }
