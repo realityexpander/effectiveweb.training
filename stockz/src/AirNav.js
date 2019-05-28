@@ -9,28 +9,45 @@ export default class AirNav extends HTMLElement {
         if (!this.activeLinkClass)
             this.activeLinkClass = 'active-link';
         const links = this.querySelectorAll("a");
-        console.log("links=", links);
         links.forEach(e => this.registerListener(e));
 
-
-
-        let location = window.location.href.split('#')[1];
-        if (location) { //"Add"
+        // Are we coming back from a refresh, and need to reload the view?
+        let location = window.location.href.split('#')[1]; // from address bar 
+        if (location) { //like "Add" or "List"
             let hrefLink = this.querySelector(`[href="#${location}"]`);
-            hrefLink.classList.add(this.getAttribute('activeLinkClass'));
-            this.activeLink = hrefLink;
             this.onLinkClicked({ target: hrefLink });
+            this.activeLink = hrefLink;
 
-            const event = new CustomEvent('air-nav', {
-                detail: {
-                    href: "http://localhost:3000/#" + location,
-                    hash: location
-                },
-                bubbles: true
-            });
-            document.querySelector('air-nav').dispatchEvent(event);
+            this.dispatchNavEvent(window.location.href, location, true);
+            // const event = new CustomEvent('air-nav', {
+            //     detail: {
+            //         href: window.location.href,
+            //         hash: location
+            //     },
+            //     bubbles: true
+            // });
+            // setTimeout(() => { // Delayed event creation, why?
+            //     this.dispatchEvent(event);
+            // }, 0);
         }
+    }
 
+    dispatchNavEvent(href, view, delay = false) {
+        const event = new CustomEvent('air-nav', {
+            detail: {
+                href: href,
+                hash: view
+            },
+            bubbles: true
+        });
+
+        if (delay) {
+            setTimeout(() => { // Delayed event creation, why?
+                this.dispatchEvent(event);
+            }, 0);
+        } else {
+            this.dispatchEvent(event);
+        }
     }
 
     registerListener(e) {
@@ -43,15 +60,17 @@ export default class AirNav extends HTMLElement {
         const { href } = location;
         const { hash } = location;
         console.log(" onhashchange->", href, hash);
-        const event = new CustomEvent('air-nav', {
-            detail: {
-                href: href,
-                hash: hash.substring(1)
-            },
-            bubbles: true
 
-        });
-        this.dispatchEvent(event);
+        this.dispatchNavEvent(href, hash.substring(1));
+        // const event = new CustomEvent('air-nav', {
+        //     detail: {
+        //         href: href,
+        //         hash: hash.substring(1)
+        //     },
+        //     bubbles: true
+
+        // });
+        // this.dispatchEvent(event);
         const element = this.querySelector(`[href="${hash}"]`);
         this.onLinkClicked({ target: element });
 
