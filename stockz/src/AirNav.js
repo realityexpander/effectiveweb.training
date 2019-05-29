@@ -15,9 +15,10 @@ export default class AirNav extends HTMLElement {
         const location = window.location.href.split('#')[1]; // from address bar 
         if (location) { //like "Add" or "List"
             let hrefLink = this.querySelector(`[href="#${location}"]`);
+            this.dispatchNavEvent(window.location.href, location, true);
             this.onLinkClicked({ target: hrefLink });
             this.activeLink = hrefLink;
-            this.dispatchNavEvent(window.location.href, location, true);
+
         }
     }
 
